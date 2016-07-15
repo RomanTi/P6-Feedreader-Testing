@@ -88,9 +88,7 @@ $(function() {
 
         /* wait for async loading */
         beforeEach(function(done) {
-            loadFeed(0, function() {
-                done();
-            });    
+            loadFeed(0, done);
         });
 
         it('feed container is not empty after loadFeed', function() {
@@ -105,20 +103,24 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          */
 
-        var content;
+        var content1,
+            content2;
+
 
         /* wait for async loading */
         beforeEach(function(done) {
-            currentContent = $('.feed').html();
-            loadFeed(1, function() {
-                done();
-            });
+            loadFeed(0, function() {
+                content0 = $('.feed').html();
+                loadFeed(1, function() {
+                    content1 = $('.feed').html();
+                    done();
+                });
+            });    
         });
 
-        it('content changes after new feed is loaded', function(done) {
-            var newContent = $('.feed').html();
-            expect(newContent).not.toBe(content);
-            done();
+        it('content changes after new feed is loaded', function() {
+            expect(content0).not.toBe(content1);
+
         });
     });
 
